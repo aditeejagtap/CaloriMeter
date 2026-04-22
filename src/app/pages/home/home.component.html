@@ -1,0 +1,316 @@
+<div class="app-container">
+  @if (isLoading) {
+    <p>Loading...</p>
+  } @else {
+    @if (!activePlan) {
+      <div class="no-plan">
+        <p>No active plan yet.</p>
+        <button class="btn-primary" routerLink="/plan">Create a Plan</button>
+      </div>
+    } @else {
+      <!-- Date Strip -->
+      <div class="date-strip">
+        <div class="date-nav">
+          <button (click)="prevDay()">◀</button>
+          <button (click)="nextDay()">▶</button>
+        </div>
+        <div class="date-text">{{ getFormattedDate(viewingDate) }}</div>
+      </div>
+      <!-- Calorie Ring Section -->
+      <div class="ring-section">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120">
+            <defs>
+              <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color: #ff3d00" />
+                <stop offset="100%" style="stop-color: #ffd600" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="60" cy="60" r="54" />
+            <circle
+              class="ring-fill"
+              cx="60"
+              cy="60"
+              r="54"
+              [style.stroke-dashoffset]="ringDashOffset"
+            />
+          </svg>
+          <div class="ring-center">
+            <div class="ring-number">{{ caloriesRemaining }}</div>
+            <div class="ring-label">kcal left</div>
+          </div>
+        </div>
+        <div class="ring-stats">
+          <!-- 🍽️ CONSUMED -->
+          <h2>
+            🍽️ <span class="gradient-text"> Consumed &nbsp; : &nbsp; </span>
+            <span
+              [ngClass]="{
+                'green-text':
+                  caloriesConsumed <= (activePlan.dailyCalorieTarget || 0),
+                'red-text':
+                  caloriesConsumed > (activePlan.dailyCalorieTarget || 0),
+              }"
+            >
+              {{ caloriesConsumed }} / {{ activePlan.dailyCalorieTarget || 0 }}
+            </span>
+          </h2>
+
+          <!-- 🏃 BURNED -->
+          <h2>
+            🏃
+            <span class="gradient-text">
+              Burned &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;</span
+            >
+            <span
+              [ngClass]="{
+                'green-text':
+                  caloriesBurned >= (activePlan.minimumDailyBurn || 0),
+                'red-text': caloriesBurned < (activePlan.minimumDailyBurn || 0),
+              }"
+            >
+              {{ caloriesBurned }} / {{ activePlan.minimumDailyBurn || 0 }}
+            </span>
+          </h2>
+        </div>
+      </div>
+
+      <!-- Macros Section -->
+      <div class="macro-card">
+        <div class="section-title">Macros Today</div>
+        <div class="macros">
+          <div class="macro">
+            <div class="macro-bar-wrap">
+              <div
+                class="macro-bar-fill carbs"
+                [style.width.%]="
+                  getMacroPercentage(macroConsumed.carbs, macroTarget.carbs)
+                "
+              ></div>
+            </div>
+            <div class="macro-val carbs">{{ macroConsumed.carbs }}g</div>
+            <div class="macro-name">Carbs</div>
+            <div class="macro-target">/ {{ macroTarget.carbs }}g</div>
+          </div>
+          <div class="macro">
+            <div class="macro-bar-wrap">
+              <div
+                class="macro-bar-fill protein"
+                [style.width.%]="
+                  getMacroPercentage(macroConsumed.protein, macroTarget.protein)
+                "
+              ></div>
+            </div>
+            <div class="macro-val protein">{{ macroConsumed.protein }}g</div>
+            <div class="macro-name">Protein</div>
+            <div class="macro-target">/ {{ macroTarget.protein }}g</div>
+          </div>
+          <div class="macro">
+            <div class="macro-bar-wrap">
+              <div
+                class="macro-bar-fill fat"
+                [style.width.%]="
+                  getMacroPercentage(macroConsumed.fats, macroTarget.fats)
+                "
+              ></div>
+            </div>
+            <div class="macro-val fat">{{ macroConsumed.fats }}g</div>
+            <div class="macro-name">Fat</div>
+            <div class="macro-target">/ {{ macroTarget.fats }}g</div>
+          </div>
+        </div>
+      </div>
+      <!-- Meals Section -->
+      <div class="log-card">
+        <div class="log-card-header">
+          <span class="section-title">🍽 Meals</span>
+          @if (!isViewingPast) {
+            <button class="btn-add" (click)="showMealPicker = true">
+              + Add
+            </button>
+          }
+        </div>
+
+        @if (dailyLog?.meals?.length) {
+          @for (
+            meal of dailyLog!.meals;
+            track meal.templateId;
+            let i = $index
+          ) {
+            <div class="log-item">
+              <span class="log-name">{{ meal.foodItem }}</span>
+              <span class="log-qty">× {{ meal.quantity }}</span>
+              <span class="log-cal">{{ meal.caloriesConsumed }} kcal</span>
+              <button class="btn-delete" (click)="deleteMealLog(i)">🗑</button>
+            </div>
+          }
+        } @else {
+          <p class="empty-hint">No meals logged yet</p>
+        }
+      </div>
+
+      <!-- Meal Picker -->
+      @if (showMealPicker) {
+        <div class="picker-overlay" (click)="showMealPicker = false">
+          <div class="picker-card" (click)="$event.stopPropagation()">
+            <h3>Select Meal</h3>
+
+            @if (!selectedMealTemplate) {
+              @for (template of mealTemplates; track template.id) {
+                <div class="picker-item" (click)="selectMealTemplate(template)">
+                  <span>{{ template.foodItem }}</span>
+                  <span>{{ template.caloriesPerServing }} kcal/serving</span>
+                </div>
+              }
+            } @else {
+              <div class="quantity-picker">
+                <p>{{ selectedMealTemplate.foodItem }}</p>
+                <p>
+                  {{ selectedMealTemplate.caloriesPerServing }} kcal ×
+                  {{ mealQuantity }} =
+                  {{ selectedMealTemplate.caloriesPerServing * mealQuantity }}
+                  kcal
+                </p>
+                <div class="qty-controls">
+                  <button
+                    (click)="
+                      mealQuantity =
+                        mealQuantity > 0.5 ? mealQuantity - 0.5 : 0.5
+                    "
+                  >
+                    −
+                  </button>
+                  <span>{{ mealQuantity }}</span>
+                  <button (click)="mealQuantity = mealQuantity + 0.5">+</button>
+                </div>
+                <button class="btn-primary" (click)="logMeal()">
+                  Log Meal
+                </button>
+                <button
+                  class="btn-secondary"
+                  (click)="selectedMealTemplate = null"
+                >
+                  Back
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Workouts Section -->
+      <div class="log-card">
+        <div class="log-card-header">
+          <span class="section-title">🏋 Workouts</span>
+          @if (!isViewingPast) {
+            <button class="btn-add" (click)="showWorkoutPicker = true">
+              + Add
+            </button>
+          }
+        </div>
+
+        @if (dailyLog?.workouts?.length) {
+          @for (
+            workout of dailyLog!.workouts;
+            track workout.templateId;
+            let i = $index
+          ) {
+            <div class="log-item">
+              <span class="log-name">{{ workout.activityName }} </span>
+              <span class="log-qty">{{ workout.durationMins }} mins</span>
+              <span class="log-cal green"
+                >−{{ workout.caloriesBurned }} kcal</span
+              >
+              <button class="btn-delete" (click)="deleteWorkoutLog(i)">
+                🗑
+              </button>
+            </div>
+          }
+        } @else {
+          <p class="empty-hint">No workouts logged yet</p>
+        }
+      </div>
+
+      <!-- Workout Picker -->
+      @if (showWorkoutPicker) {
+        <div class="picker-overlay" (click)="showWorkoutPicker = false">
+          <div class="picker-card" (click)="$event.stopPropagation()">
+            <h3>Select Workout</h3>
+            @if (!selectedWorkoutTemplate) {
+              @for (template of workoutTemplates; track template.id) {
+                <div
+                  class="picker-item"
+                  (click)="selectWorkoutTemplate(template)"
+                >
+                  <span>{{ template.activityName }} </span>
+                  <span>{{ template.durationMins }} mins</span>
+                </div>
+              }
+            } @else {
+              <div class="quantity-picker">
+                <p>{{ selectedWorkoutTemplate.activityName }}</p>
+                <p>{{ selectedWorkoutTemplate.durationMins }} mins</p>
+                <div class="qty-controls">
+                  <label>Calories Burned:</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="workoutCaloriesBurned"
+                    placeholder="Enter calories"
+                  />
+                </div>
+                <button class="btn-primary" (click)="logWorkout()">
+                  Log Workout
+                </button>
+                <button
+                  class="btn-secondary"
+                  (click)="selectedWorkoutTemplate = null"
+                >
+                  Back
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Water Section -->
+      <div class="water-card">
+        <div class="section-title">Hydration</div>
+        <div class="water-row">
+          <div class="water-drops">
+            @for (drop of waterDrops; track $index) {
+              <div
+                class="drop"
+                [class.filled]="$index < filledDrops"
+                (click)="toggleDrop($index)"
+              ></div>
+            }
+          </div>
+
+          <div class="water-status">
+            <span class="water-count">
+              {{ filledDrops }} / {{ waterDrops.length }}
+            </span>
+
+            <span
+              class="water-message"
+              [ngClass]="{
+                'green-text': filledDrops >= waterDrops.length,
+                'yellow-text': filledDrops >= waterDrops.length - 2,
+                'muted-text': filledDrops < waterDrops.length - 2,
+              }"
+            >
+              @if (filledDrops >= waterDrops.length) {
+                Fully hydrated! 💪
+              } @else if (filledDrops >= waterDrops.length - 2) {
+                Almost there!
+              } @else {
+                Keep drinking!
+              }
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

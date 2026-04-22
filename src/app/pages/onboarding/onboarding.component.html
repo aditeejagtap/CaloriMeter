@@ -1,0 +1,53 @@
+<div class="app-container onboarding-container">
+  <div class="onboarding-header">
+    <h1>Let's get you started!</h1>
+    <p class="subtitle">Build your personalized fitness journey</p>
+  </div>
+  <form [formGroup]="onboarding_form">
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input formControlName="dateOfBirth" type="date" />
+    </div>
+    <div class="form-group">
+      <label>Enter your Height</label>
+      <input
+        formControlName="height"
+        type="number"
+        min="1"
+        max="300"
+        placeholder="Height (in cm)"
+      />
+    </div>
+    <div class="form-group">
+      <label>Enter your Weight</label>
+      <input
+        formControlName="weight"
+        type="number"
+        min="1"
+        max="500"
+        placeholder="Weight (in kg)"
+      />
+    </div>
+    <div class="form-group">
+      <label>Select Gender</label>
+      <select formControlName="gender">
+        <option value="" disabled selected>Select Gender</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Select Activity Level</label>
+      <select formControlName="activityLevel">
+        <option value="" disabled selected>
+          Select your Activity level in a day
+        </option>
+        <option value="sedentary">Sedentary</option>
+        <option value="light">Light</option>
+        <option value="moderate">Moderate</option>
+        <option value="active">Active</option>
+      </select>
+    </div>
+    <button type="button" (click)="onSubmit()">Get Started</button>
+  </form>
+</div>

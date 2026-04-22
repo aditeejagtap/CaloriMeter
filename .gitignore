@@ -29,7 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/.angular
 .sass-cache/
 /connect.lock
 /coverage
@@ -40,3 +40,16 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+calorie-tracker.html
+
+# Environment files (future safe)
+.env
+.env.local
+.env.*.local
+
+# Logs (extra safety)
+*.log
+
+# Temp files
+*.tmp
+*.swp

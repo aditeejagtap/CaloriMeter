@@ -1,0 +1,322 @@
+.progress-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .progress-container {
+    padding: 16px 12px;
+  }
+  
+  .progress-card {
+    padding: 16px;
+  }
+  
+  .weight-stats {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .weight-stat {
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+  
+  .calendar-grid {
+    gap: 4px;
+  }
+  
+  .cal-day {
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .progress-container {
+    padding: 32px 24px;
+  }
+  
+  .progress-card {
+    padding: 24px;
+  }
+  
+  .weight-stats {
+    gap: 24px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+  }
+  
+  .calendar-grid {
+    gap: 8px;
+  }
+  
+  .cal-day {
+    height: 48px;
+  }
+}
+
+/* No Plan State */
+.no-plan {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.no-plan p {
+  font-size: 16px;
+  color: #727070;
+  margin-bottom: 24px;
+}
+
+/* Progress Card */
+.progress-card {
+  background: #1E1E1E;
+  border: 1px solid #2A2A2A;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.progress-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 3px;
+  color: #F0F0F0;
+}
+
+/* Weight Stats */
+.weight-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.weight-stat {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #727070;
+  font-family: 'Barlow Condensed', sans-serif;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: #F0F0F0;
+}
+
+.weight-stat.highlight .stat-value {
+  background: linear-gradient(90deg, #FF3D00, #FFD600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Progress Bar */
+.progress-bar-wrap {
+  height: 8px;
+  background: #2A2A2A;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 58%;
+  background: linear-gradient(90deg, #FF3D00, #FFD600);
+  border-radius: 4px;
+  position: relative;
+  transition: width 1s ease;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 214, 0, 0.8);
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
+  color: #727070;
+  text-transform: uppercase;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.progress-labels span:last-child {
+  color: #4CAF50;
+}
+
+/* Weight History */
+.weight-history {
+  margin-top: 24px;
+  border-top: 1px solid #2A2A2A;
+  padding-top: 16px;
+}
+
+.weight-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.entry-date {
+  font-size: 13px;
+  color: #727070;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.entry-weight {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: #F0F0F0;
+}
+
+/* Calendar Card */
+.calendar-card {
+  background: #1E1E1E;
+  border: 1px solid #2A2A2A;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.calendar-header button {
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  color: #F0F0F0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.calendar-header button:hover {
+  border-color: #FF3D00;
+  color: #FF3D00;
+}
+
+.calendar-header span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.cal-day-label {
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #727070;
+  padding: 8px 0;
+}
+
+.cal-day {
+  height: 48px;
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.cal-day:hover {
+  border-color: #FF8C00;
+}
+
+.cal-day.today {
+  border-color: #FF3D00;
+  background: rgba(255, 61, 0, 0.1);
+}
+
+.cal-day.has-log {
+  border-color: #4CAF50;
+}
+
+.cal-day span:first-child {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: #F0F0F0;
+}
+
+.cal-day.has-log .streak-icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 10px;
+}
+
+/* Weight Input Row */
+.weight-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.weight-input-row input {
+  flex: 1;
+}
+
+.weight-input-row button {
+  width: auto;
+  padding: 14px 24px;
+}

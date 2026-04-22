@@ -1,0 +1,76 @@
+<div class="app-container profile-container">
+  @if (!isEditing) {
+    <div class="profile-display">
+      <img [src]="profile?.photoUrl" alt="Profile Photo" />
+      <h2>{{ profile?.name }}</h2>
+      <p>{{ profile?.email }}</p>
+      <p>Joined: {{ profile?.joinedDate }}</p>
+
+      <div class="details">
+        <p>Age: {{ profile?.age }}</p>
+        <p>Height: {{ profile?.height }} cm</p>
+        <p>Weight: {{ profile?.weight }} kg</p>
+        <p>Gender: {{ profile?.gender }}</p>
+        <p>Activity Level: {{ profile?.activityLevel }}</p>
+      </div>
+
+      <button (click)="isEditing = true">Edit Details</button>
+      <button (click)="logout()">Logout</button>
+    </div>
+  }
+
+  @if (isEditing) {
+    <form [formGroup]="edit_form">
+      <div class="form-group">
+        <label>Enter your Age</label>
+        <input
+          formControlName="age"
+          type="number"
+          min="1"
+          max="120"
+          placeholder="Age (in years)"
+        />
+      </div>
+      <div class="form-group">
+        <label>Enter your Height</label>
+        <input
+          formControlName="height"
+          type="number"
+          min="1"
+          max="300"
+          placeholder="Height (in cm)"
+        />
+      </div>
+      <div class="form-group">
+        <label>Enter your Weight</label>
+        <input
+          formControlName="weight"
+          type="number"
+          min="1"
+          max="500"
+          placeholder="Weight (in kg)"
+        />
+      </div>
+      <div class="form-group">
+        <label>Select Gender</label>
+        <select formControlName="gender">
+          <option value="" disabled>Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Select Activity Level</label>
+        <select formControlName="activityLevel">
+          <option value="" disabled>Select Activity Level</option>
+          <option value="Sedentary">Sedentary</option>
+          <option value="Light">Light</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Active">Active</option>
+        </select>
+      </div>
+      <button type="button" (click)="saveProfile()">Save</button>
+      <button type="button" (click)="isEditing = false">Cancel</button>
+    </form>
+  }
+</div>

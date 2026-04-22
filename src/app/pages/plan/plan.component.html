@@ -1,0 +1,214 @@
+<div class="app-container plan-container">
+  <div class="plan-header">
+    <h1>Create Your Plan</h1>
+    <p class="subtitle">Let's build your personalized fitness journey!</p>
+  </div>
+
+  @if (isLoading) {
+    <p>Loading...</p>
+  } @else {
+    <!-- Stage 1: Goal & Weight -->
+    @if (stage === 1) {
+      <div class="plan-card">
+        <h2>Step 1: Set Your Goal</h2>
+        <form [formGroup]="stage1_form">
+          <div class="form-group">
+            <label>What's your goal?</label>
+            <div class="goal-options">
+              <label class="goal-option">
+                <input
+                  type="radio"
+                  formControlName="goal"
+                  value="weight_loss"
+                />
+                <span class="goal-card">
+                  <span class="goal-icon">🔥</span>
+                  <span class="goal-name">Weight Loss</span>
+                </span>
+              </label>
+              <label class="goal-option">
+                <input
+                  type="radio"
+                  formControlName="goal"
+                  value="maintenance"
+                />
+                <span class="goal-card">
+                  <span class="goal-icon">⚖️</span>
+                  <span class="goal-name">Maintenance</span>
+                </span>
+              </label>
+              <label class="goal-option">
+                <input
+                  type="radio"
+                  formControlName="goal"
+                  value="weight_gain"
+                />
+                <span class="goal-card">
+                  <span class="goal-icon">💪</span>
+                  <span class="goal-name">Weight Gain</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Current Weight</label>
+            <div class="weight-display">
+              <span class="weight-value">{{ currentWeight }}</span>
+              <span class="weight-unit">kg</span>
+            </div>
+            <p class="hint">From your profile</p>
+          </div>
+
+          @if (!isMaintenance) {
+            <div class="form-group">
+              <label for="targetWeight">Target Weight</label>
+              <input
+                type="number"
+                id="targetWeight"
+                formControlName="targetWeight"
+                [placeholder]="targetWeightPlaceholder"
+                class="input-field"
+              />
+              <span class="input-unit">kg</span>
+            </div>
+          }
+
+          <button type="button" class="btn-primary" (click)="getSuggestions()">
+            {{
+              isMaintenance ? "Create Maintenance Plan" : "Get Duration Options"
+            }}
+          </button>
+        </form>
+      </div>
+    }
+
+    <!-- Stage 2: Duration Options -->
+    @if (stage === 2) {
+      <div class="plan-card">
+        <h2>Step 2: Choose Your Pace</h2>
+        <div class="duration-options">
+          @for (option of durationOptions; track option.label) {
+            <div
+              class="duration-card"
+              [class.selected]="selectedOption === option"
+              (click)="selectOption(option)"
+            >
+              <div class="duration-header">
+                <span class="duration-label">{{
+                  option.label | titlecase
+                }}</span>
+                <span class="duration-badge">{{ option.risk }}</span>
+              </div>
+              <div class="duration-details">
+                <div class="duration-stat">
+                  <span class="stat-label">Duration</span>
+                  <span class="stat-value">{{ option.durationDays }} days</span>
+                </div>
+                <div class="duration-stat">
+                  <span class="stat-label">Daily Change</span>
+                  <span class="stat-value">{{ option.dailyChange }} cal</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <button
+          type="button"
+          class="btn-primary"
+          [disabled]="!selectedOption"
+          (click)="createPlan()"
+        >
+          Create My Plan
+        </button>
+      </div>
+    }
+
+    <!-- Stage 3: Active Plan -->
+    @if (stage === 3 && activePlan) {
+      <div class="plan-card">
+        <h2>Your Active Plan</h2>
+        <div class="plan-details-grid">
+          <!-- Goal -->
+          <div class="plan-item highlight">
+            <span class="plan-label">Goal</span>
+            <span class="plan-value">{{ activePlan.goal | titlecase }}</span>
+          </div>
+
+          <!-- Weight -->
+          <div class="plan-item">
+            <span class="plan-label">Current</span>
+            <span class="plan-value">{{ activePlan.currentWeight }} kg</span>
+          </div>
+
+          <div class="plan-item">
+            <span class="plan-label">Target</span>
+            <span class="plan-value">{{ activePlan.targetWeight }} kg</span>
+          </div>
+
+          <!-- Duration -->
+          <div class="plan-item">
+            <span class="plan-label">Duration</span>
+            <span class="plan-value">{{ activePlan.durationDays }} days</span>
+          </div>
+
+          <!-- Calories -->
+          <div class="plan-item big">
+            <span class="plan-label">Daily Calories</span>
+            <span class="plan-value"
+              >{{ activePlan.dailyCalorieTarget }} kcal</span
+            >
+          </div>
+
+          <!-- Macros -->
+          <div class="plan-item full">
+            <span class="plan-label">Macros</span>
+
+            <div class="macro-grid">
+              <div class="macro-card protein">
+                <span class="macro-name">Protein</span>
+                <span class="macro-value">
+                  {{ activePlan.macroTargets.protein }}g
+                </span>
+              </div>
+
+              <div class="macro-card carbs">
+                <span class="macro-name">Carbs</span>
+                <span class="macro-value">
+                  {{ activePlan.macroTargets.carbs }}g
+                </span>
+              </div>
+
+              <div class="macro-card fats">
+                <span class="macro-name">Fats</span>
+                <span class="macro-value">
+                  {{ activePlan.macroTargets.fats }}g
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- End Date -->
+          <div class="plan-item">
+            <span class="plan-label">End Date</span>
+            <span class="plan-value">{{ activePlan.endDate | date:'d MMMM y'}}</span>
+          </div>
+        </div>
+        @if (activePlan.minimumDailyBurn > 0) {
+          <div class="warning-card">
+            ⚠️ Your calorie target was below the safe minimum of
+            {{ activePlan.gender.toLowerCase() === "female" ? "1200" : "1500" }}
+            kcal. Eating target set to
+            <strong>{{ activePlan.dailyCalorieTarget }} kcal</strong>. You need
+            to burn at least
+            <strong>{{ activePlan.minimumDailyBurn }} kcal</strong>
+            through exercise daily to maintain your deficit.
+          </div>
+        }
+        <button type="button" class="btn-secondary" (click)="editPlan()">
+          Edit Plan
+        </button>
+      </div>
+    }
+  }
+</div>

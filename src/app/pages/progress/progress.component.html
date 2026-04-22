@@ -1,0 +1,108 @@
+<div class="app-container">
+  @if (isLoading) {
+    <p>Loading...</p>
+  } @else if (!activePlan) {
+    <div class="no-plan">
+      <p>No active plan found.</p>
+      <button class="btn-primary" routerLink="/plan">Create a Plan</button>
+    </div>
+  } @else {
+    <!-- Weight Progress Card -->
+    <div class="progress-card">
+      <div class="progress-header">
+        <h2>Weight Progress</h2>
+        <button class="btn-add" (click)="showWeightInput = !showWeightInput">
+          + Log Weight
+        </button>
+      </div>
+
+      @if (showWeightInput) {
+        <div class="weight-input-row">
+          <input
+            type="number"
+            [(ngModel)]="newWeight"
+            min="1"
+            max="500"
+            placeholder="Enter current weight (kg)"
+            class="input-field"
+          />
+          <button class="btn-primary" (click)="logWeeklyWeight()">Save</button>
+        </div>
+      }
+
+      <div class="weight-stats">
+        <div class="weight-stat">
+          <span class="stat-label">Start</span>
+          <span class="stat-value">{{ startWeight }} kg</span>
+        </div>
+        <div class="weight-stat highlight">
+          <span class="stat-label">Current</span>
+          <span class="stat-value">{{ currentWeight }} kg</span>
+        </div>
+        <div class="weight-stat">
+          <span class="stat-label">Goal</span>
+          <span class="stat-value">{{ goalWeight }} kg</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+      </div>
+      <div class="progress-labels">
+        <span>{{ startWeight }} kg (Start)</span>
+        <span>{{ progressPercent }}% there!</span>
+        <span>{{ kgRemaining }} kg to go</span>
+        <span>{{ goalWeight }} kg (Goal)</span>
+      </div>
+
+      <!-- Weekly weight log -->
+      @if (activePlan.weeklyWeightLog.length > 0) {
+        <div class="weight-history">
+          @for (entry of activePlan.weeklyWeightLog; track entry.date) {
+            <div class="weight-entry">
+              <span class="entry-date">{{ entry.date }}</span>
+              <span class="entry-weight">{{ entry.weight }} kg</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-card">
+      <div class="calendar-header">
+        <button (click)="prevMonth()">‹</button>
+        <span>{{ calendarMonthLabel }}</span>
+        <button (click)="nextMonth()">›</button>
+      </div>
+
+      <div class="calendar-grid">
+        @for (day of ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]; track day) {
+          <div class="cal-day-label">{{ day }}</div>
+        }
+
+        @for (date of calendarDays; track $index) {
+          @if (date === null) {
+            <div class="cal-day empty"></div>
+          } @else {
+            <div
+              class="cal-day"
+              [class.today]="isToday(date)"
+              [class.has-log]="hasLog(date)"
+              (click)="goToDay(date)"
+            >
+              <span>{{ date | slice: 8 }}</span>
+              @if (dayStatus.get(date) === "passed") {
+                <span class="streak-icon">🔥</span>
+              } @else if (dayStatus.get(date) === "failed") {
+                <span class="fail-icon">❌</span>
+              } @else if (dayStatus.get(date) === "pending") {
+                <span class="pending-icon">⏳</span>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</div>

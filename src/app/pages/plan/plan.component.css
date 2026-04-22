@@ -1,0 +1,520 @@
+.plan-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Mobile First - Default styles for mobile */
+.plan-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.plan-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #FF3D00, #FFD600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #727070;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.plan-card {
+  background: #1E1E1E;
+  border: 1px solid #2A2A2A;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.plan-card h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: #F0F0F0;
+  margin-bottom: 16px;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #727070;
+  margin-bottom: 8px;
+}
+
+/* Goal Options */
+.goal-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.goal-option {
+  cursor: pointer;
+}
+
+.goal-option input[type="radio"] {
+  display: none;
+}
+
+.goal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px;
+  background: #161616;
+  border: 2px solid #2A2A2A;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.goal-option input[type="radio"]:checked + .goal-card {
+  border-color: #FF3D00;
+  background: rgba(255, 61, 0, 0.1);
+}
+
+.goal-card:hover {
+  border-color: #FF8C00;
+}
+
+.goal-icon {
+  font-size: 24px;
+}
+
+.goal-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #F0F0F0;
+}
+
+/* Weight Display */
+.weight-display {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 12px;
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  border-radius: 10px;
+}
+
+.weight-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  background: linear-gradient(90deg, #FF3D00, #FFD600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.weight-unit {
+  font-size: 14px;
+  color: #727070;
+}
+
+.hint {
+  font-size: 10px;
+  color: #666;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* Input Field */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  border-radius: 10px;
+  color: #F0F0F0;
+  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  transition: border-color 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #FF3D00;
+}
+
+.input-unit {
+  position: static;
+  right: 32px;
+  margin-top: -42px;
+  color: #727070;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* Duration Options */
+.duration-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.duration-card {
+  padding: 14px;
+  background: #161616;
+  border: 2px solid #2A2A2A;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.duration-card:hover {
+  border-color: #FF8C00;
+}
+
+.duration-card.selected {
+  border-color: #FF3D00;
+  background: rgba(255, 61, 0, 0.1);
+}
+
+.duration-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.duration-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: #F0F0F0;
+}
+
+.duration-badge {
+  padding: 3px 10px;
+  background: rgba(255, 214, 0, 0.2);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #FFD600;
+}
+
+.duration-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.duration-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #727070;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: #F0F0F0;
+}
+
+/* Button */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #FF3D00, #FF8C00);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(255, 61, 0, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* PLAN DISPLAY GRID */
+.plan-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* Individual item */
+.plan-item {
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Labels */
+.plan-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #727070;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Values */
+.plan-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: #F0F0F0;
+}
+
+/* Highlight important */
+.plan-item.highlight {
+  grid-column: span 2;
+  background: linear-gradient(135deg, rgba(255,61,0,0.15), rgba(255,214,0,0.1));
+  border-color: #FF3D00;
+}
+
+/* Big calorie box */
+.plan-item.big {
+  grid-column: span 2;
+  text-align: center;
+}
+
+.plan-item.big .plan-value {
+  font-size: 28px;
+  background: linear-gradient(180deg, #FFD600, #FF3D00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Full width */
+.plan-item.full {
+  grid-column: span 2;
+}
+
+/* Macros styling */
+.plan-value.macro {
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+/* Warning card improvement */
+.warning-card {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 61, 0, 0.1);
+  border: 1px solid #FF3D00;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* MACRO GRID */
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Individual macro card */
+.macro-card {
+  background: #161616;
+  border: 1px solid #2A2A2A;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+/* Hover glow */
+.macro-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Names */
+.macro-name {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #727070;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Values */
+.macro-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+}
+
+/* COLOR CODING */
+.macro-card.protein {
+  border-color: #4CAF50;
+}
+
+.macro-card.protein .macro-value {
+  color: #4CAF50;
+}
+
+.macro-card.carbs {
+  border-color: #FFD600;
+}
+
+.macro-card.carbs .macro-value {
+  color: #FFD600;
+}
+
+.macro-card.fats {
+  border-color: #FF3D00;
+}
+
+.macro-card.fats .macro-value {
+  color: #FF3D00;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .plan-container {
+    padding: 32px 24px;
+  }
+  
+  .plan-header h1 {
+    font-size: 36px;
+  }
+  
+  .plan-card {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .plan-card h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 24px;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .goal-options {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  
+  .goal-card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .goal-icon {
+    font-size: 32px;
+  }
+  
+  .goal-name {
+    font-size: 14px;
+  }
+  
+  .weight-display {
+    padding: 16px;
+    gap: 8px;
+  }
+  
+  .weight-value {
+    font-size: 36px;
+  }
+  
+  .weight-unit {
+    font-size: 16px;
+  }
+  
+  .hint {
+    font-size: 11px;
+    margin-top: 8px;
+  }
+  
+  .input-field {
+    padding: 16px;
+    font-size: 16px;
+  }
+  
+  .duration-options {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .duration-card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .duration-label {
+    font-size: 20px;
+  }
+  
+  .duration-badge {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+  
+  .duration-details {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .stat-label {
+    font-size: 11px;
+  }
+  
+  .stat-value {
+    font-size: 18px;
+  }
+  
+  .btn-primary {
+    padding: 16px;
+    font-size: 16px;
+  }
+}
